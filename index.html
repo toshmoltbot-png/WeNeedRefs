@@ -20,10 +20,14 @@
             --dark: #0A0A0A;
             --card: #1A1A1A;
             --teal: #2BB5C4;
+            --teal-glow: rgba(43, 181, 196, 0.4);
+            --teal-dim: rgba(43, 181, 196, 0.1);
             --white: #FFFFFF;
             --gray: #B0B0B0;
             --muted: #808080;
         }
+
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
@@ -31,13 +35,37 @@
             color: var(--white);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            cursor: default;
         }
 
-        /* Top teal bar */
+        /* Cursor glow */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(43,181,196,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+            opacity: 0;
+        }
+        body:hover .cursor-glow { opacity: 1; }
+
+        /* Top teal bar with shimmer */
         .top-bar {
             height: 4px;
-            background: var(--teal);
+            background: linear-gradient(90deg, var(--teal), #1a8a96, var(--teal), #3de0f0, var(--teal));
+            background-size: 300% 100%;
+            animation: shimmer 3s linear infinite;
             width: 100%;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
         }
 
         .container {
@@ -47,6 +75,47 @@
             text-align: center;
         }
 
+        /* Scroll reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.85);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Stagger children */
+        .stagger > * { transition-delay: calc(var(--i, 0) * 0.12s); }
+
         /* Brand tag */
         .brand-tag {
             margin-top: 48px;
@@ -55,6 +124,13 @@
             letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--teal);
+            opacity: 0;
+            animation: fadeDown 1s 0.3s forwards;
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Hero */
@@ -68,10 +144,40 @@
             line-height: 1.05;
             text-transform: uppercase;
             letter-spacing: -0.02em;
+            overflow: hidden;
+        }
+
+        /* Typewriter container */
+        .typewriter-line {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .typewriter-line:nth-child(1) {
+            animation: typewriter 1.2s steps(20) 0.5s both;
+        }
+        .typewriter-line:nth-child(2) {
+            animation: typewriter 1.4s steps(22) 1.8s both;
+        }
+
+        @keyframes typewriter {
+            from { max-width: 0; }
+            to { max-width: 100%; }
         }
 
         .hero h1 .teal {
-            color: var(--teal);
+            background: linear-gradient(135deg, #2BB5C4, #3de0f0, #2BB5C4);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         .hero .subhead {
@@ -83,18 +189,61 @@
             margin-left: auto;
             margin-right: auto;
             line-height: 1.7;
+            opacity: 0;
+            animation: fadeUp 1s 3s forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .hero .subhead strong {
             color: var(--white);
         }
 
-        /* Pay block */
+        /* Pay block with tilt */
         .pay-block {
             margin-top: 48px;
-            background: var(--teal);
+            background: linear-gradient(135deg, #2BB5C4, #1a9aa8);
             border-radius: 16px;
             padding: 40px 32px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pay-block:hover {
+            transform: perspective(800px) rotateY(var(--rx, 0deg)) rotateX(var(--ry, 0deg)) scale(1.02);
+            box-shadow: 0 20px 60px rgba(43, 181, 196, 0.3);
+        }
+
+        /* Floating particles on pay block */
+        .pay-block::before {
+            content: '$';
+            position: absolute;
+            font-size: 120px;
+            font-weight: 900;
+            color: rgba(0,0,0,0.06);
+            top: -20px;
+            right: -10px;
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
+        .pay-block::after {
+            content: '$';
+            position: absolute;
+            font-size: 80px;
+            font-weight: 900;
+            color: rgba(0,0,0,0.04);
+            bottom: -10px;
+            left: 10px;
+            animation: floatSlow 5s ease-in-out 1s infinite;
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
         }
 
         .pay-block .label {
@@ -126,15 +275,31 @@
             color: rgba(0,0,0,0.5);
         }
 
-        /* Divider */
+        /* Counter animation */
+        .counter {
+            display: inline-block;
+        }
+
+        /* Divider with glow */
         .divider {
             height: 2px;
             background: var(--teal);
             opacity: 0.3;
             margin: 48px 0;
+            position: relative;
+        }
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, transparent, var(--teal-glow), transparent);
+            filter: blur(4px);
         }
 
-        /* Feature cards */
+        /* Feature cards with hover effects */
         .features {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -146,11 +311,45 @@
             background: var(--card);
             border-radius: 14px;
             padding: 32px 20px;
+            border: 1px solid transparent;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 14px;
+            padding: 1px;
+            background: linear-gradient(135deg, transparent 40%, var(--teal) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(43, 181, 196, 0.15);
+            background: #222;
         }
 
         .feature-card .icon {
             font-size: 32px;
             margin-bottom: 16px;
+            display: inline-block;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .feature-card:hover .icon {
+            transform: scale(1.3) rotate(10deg);
         }
 
         .feature-card h3 {
@@ -186,6 +385,14 @@
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 24px;
+        }
+
+        .detail-item {
+            transition: transform 0.3s;
+        }
+
+        .detail-item:hover {
+            transform: scale(1.05);
         }
 
         .detail-item .label {
@@ -224,12 +431,40 @@
             color: var(--white);
         }
 
-        /* CTA box */
+        /* CTA box with pulse */
         .cta-box {
             margin-top: 48px;
             border: 2px solid var(--teal);
             border-radius: 16px;
             padding: 40px 32px;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow 0.4s;
+        }
+
+        .cta-box:hover {
+            box-shadow: 0 0 40px var(--teal-glow), inset 0 0 40px var(--teal-dim);
+        }
+
+        /* Animated border */
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 16px;
+            background: conic-gradient(from var(--angle, 0deg), transparent 60%, var(--teal) 100%);
+            animation: rotateBorder 4s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotateBorder {
+            to { --angle: 360deg; }
+        }
+
+        @property --angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
         }
 
         .cta-box .cta-label {
@@ -246,6 +481,7 @@
             font-weight: 900;
             color: var(--white);
             letter-spacing: 0.05em;
+            text-shadow: 0 0 20px var(--teal-glow);
         }
 
         .cta-box .to {
@@ -264,6 +500,12 @@
         .cta-box .phone a {
             color: var(--white);
             text-decoration: none;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        .cta-box .phone a:hover {
+            color: var(--teal);
+            text-shadow: 0 0 20px var(--teal-glow);
         }
 
         .cta-box .url {
@@ -278,12 +520,63 @@
             text-decoration: none;
         }
 
+        /* Tap to text button */
+        .sms-link {
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sms-link::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
+            animation: btnShine 3s ease-in-out infinite;
+        }
+
+        @keyframes btnShine {
+            0%, 100% { transform: translateX(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        @media (max-width: 768px) {
+            .sms-link {
+                display: inline-block;
+                margin-top: 20px;
+                background: var(--teal);
+                color: var(--black);
+                font-size: 16px;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                padding: 16px 32px;
+                border-radius: 10px;
+                text-decoration: none;
+                animation: pulse 2s ease-in-out infinite;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 var(--teal-glow); }
+            50% { box-shadow: 0 0 0 12px transparent; }
+        }
+
         /* Urgency pulse */
         .urgency {
             margin-top: 48px;
             background: var(--card);
             border-radius: 14px;
             padding: 32px;
+            border: 1px solid #222;
+            transition: border-color 0.4s;
+        }
+
+        .urgency:hover {
+            border-color: var(--teal);
         }
 
         .urgency p {
@@ -295,12 +588,31 @@
 
         .urgency .teal {
             color: var(--teal);
+            position: relative;
+        }
+
+        .urgency .teal::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--teal);
+            animation: pulseWidth 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseWidth {
+            0%, 100% { transform: scaleX(1); opacity: 1; }
+            50% { transform: scaleX(0.5); opacity: 0.5; }
         }
 
         /* Bottom bar */
         .bottom-bar {
             margin-top: 64px;
-            background: var(--teal);
+            background: linear-gradient(90deg, var(--teal), #1a9aa8, var(--teal));
+            background-size: 200% 100%;
+            animation: shimmer 4s linear infinite;
             padding: 16px 24px;
             text-align: center;
         }
@@ -318,6 +630,17 @@
             text-decoration: none;
         }
 
+        /* Confetti canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
         /* Mobile */
         @media (max-width: 520px) {
             .features {
@@ -332,29 +655,54 @@
             }
         }
 
-        /* SMS link on mobile */
-        .sms-link {
-            display: none;
+        /* Floating badges */
+        .floating-badge {
+            position: fixed;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--teal);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            writing-mode: vertical-rl;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .floating-badge.left {
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .floating-badge.right {
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%) rotate(180deg);
         }
 
         @media (max-width: 768px) {
-            .sms-link {
-                display: inline-block;
-                margin-top: 20px;
-                background: var(--teal);
-                color: var(--black);
-                font-size: 16px;
-                font-weight: 800;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                padding: 16px 32px;
-                border-radius: 10px;
-                text-decoration: none;
-            }
+            .floating-badge { display: none; }
+        }
+
+        /* Scroll progress bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--teal), #3de0f0);
+            z-index: 10001;
+            width: 0%;
+            transition: width 0.1s;
         }
     </style>
 </head>
 <body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<canvas id="confetti-canvas"></canvas>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="floating-badge left">WE NEED REFS</div>
+<div class="floating-badge right">WE NEED REFS</div>
 
 <div class="top-bar"></div>
 
@@ -363,47 +711,50 @@
     <p class="brand-tag">Central Mass Flag Worcester</p>
 
     <div class="hero">
-        <h1>We Need <span class="teal">Refs.</span><br>You Need <span class="teal">Cash.</span></h1>
+        <h1>
+            <span class="typewriter-line">We Need <span class="teal">Refs.</span></span>
+            <span class="typewriter-line">You Need <span class="teal">Cash.</span></span>
+        </h1>
         <p class="subhead">
-            Get paid to ref youth NFL flag football games on Sunday afternoons. 
-            No experience necessary. We train you. 
+            Get paid to ref youth NFL flag football games on Sunday afternoons.
+            No experience necessary. We train you.
             <strong>Season is happening now.</strong>
         </p>
     </div>
 
-    <div class="pay-block">
+    <div class="pay-block reveal-scale" id="payBlock">
         <p class="label">Up To</p>
-        <p class="amount">$25 / hr</p>
+        <p class="amount">$<span class="counter" data-target="25">0</span> / hr</p>
         <p class="detail">Multiple games every Sunday, May 17 - June 28</p>
         <p class="math">Do the math.</p>
     </div>
 
-    <div class="features">
-        <div class="feature-card">
+    <div class="features stagger">
+        <div class="feature-card reveal" style="--i: 0">
             <div class="icon">&#9917;</div>
             <h3>Sundays Only</h3>
             <p>Two to four hours on a Sunday afternoon. That's it. Your weekdays and Saturdays are yours.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal" style="--i: 1">
             <div class="icon">&#127891;</div>
             <h3>College Apps</h3>
             <p>Leadership, community involvement, paid work experience. Admissions officers notice this stuff.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal" style="--i: 2">
             <div class="icon">&#9201;</div>
             <h3>Service Hours</h3>
             <p>Need community service hours for school or NHS? We'll sign off on every hour you ref.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal" style="--i: 3">
             <div class="icon">&#128170;</div>
             <h3>No Experience</h3>
             <p>If you know what a first down is, you're ahead of the curve. We'll teach you the rest.</p>
         </div>
     </div>
 
-    <div class="divider"></div>
+    <div class="divider reveal"></div>
 
-    <div class="details">
+    <div class="details reveal">
         <p class="section-label">The Details</p>
         <div class="details-grid">
             <div class="detail-item">
@@ -418,23 +769,23 @@
             </div>
             <div class="detail-item">
                 <p class="label">Ages</p>
-                <p class="value">15+</p>
+                <p class="value"><span class="counter" data-target="15">0</span>+</p>
                 <p class="sub">Must be 15 or older</p>
             </div>
         </div>
     </div>
 
-    <div class="divider"></div>
+    <div class="divider reveal"></div>
 
-    <p class="what-you-need">
-        <strong>What you need:</strong> A pair of sneakers, a basic understanding of football, 
-        and the ability to show up on Sundays. That's it. We handle the training, the schedule, 
+    <p class="what-you-need reveal">
+        <strong>What you need:</strong> A pair of sneakers, a basic understanding of football,
+        and the ability to show up on Sundays. That's it. We handle the training, the schedule,
         and the whistle.
     </p>
 
-    <div class="divider"></div>
+    <div class="divider reveal"></div>
 
-    <div class="cta-box">
+    <div class="cta-box reveal-scale" id="ctaBox">
         <p class="cta-label">We Need You This Sunday. Text Now.</p>
         <p class="code">SPRINGREF26</p>
         <p class="to">to</p>
@@ -443,7 +794,7 @@
         <a href="sms:9786354968&body=SPRINGREF26" class="sms-link">Tap to Text Now</a>
     </div>
 
-    <div class="urgency">
+    <div class="urgency reveal">
         <p>Games are happening <span class="teal">right now</span> and we need more refs on the field. Every Sunday you wait is money you're not making.</p>
     </div>
 
@@ -452,6 +803,139 @@
 <div class="bottom-bar">
     <p>Central Mass Flag Worcester &bull; NFL Flag Football &bull; Spring 2026 &bull; <a href="https://worcesterflag.com">worcesterflag.com</a></p>
 </div>
+
+<script>
+// Scroll reveal observer
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => revealObserver.observe(el));
+
+// Counter animation
+const counters = document.querySelectorAll('.counter');
+const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseInt(el.dataset.target);
+            let current = 0;
+            const increment = target / 30;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    el.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    el.textContent = Math.floor(current);
+                }
+            }, 40);
+            counterObserver.unobserve(el);
+        }
+    });
+}, { threshold: 0.5 });
+counters.forEach(c => counterObserver.observe(c));
+
+// Cursor glow
+const glow = document.getElementById('cursorGlow');
+document.addEventListener('mousemove', (e) => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+});
+
+// 3D tilt on pay block
+const payBlock = document.getElementById('payBlock');
+payBlock.addEventListener('mousemove', (e) => {
+    const rect = payBlock.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    payBlock.style.setProperty('--rx', (x * 8) + 'deg');
+    payBlock.style.setProperty('--ry', (-y * 8) + 'deg');
+});
+payBlock.addEventListener('mouseleave', () => {
+    payBlock.style.setProperty('--rx', '0deg');
+    payBlock.style.setProperty('--ry', '0deg');
+});
+
+// Scroll progress bar
+window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('scrollProgress').style.width = progress + '%';
+});
+
+// Confetti on CTA click
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+let confettiPieces = [];
+const confettiColors = ['#2BB5C4', '#3de0f0', '#ffffff', '#1a9aa8', '#FFD700'];
+
+function createConfetti(x, y) {
+    for (let i = 0; i < 80; i++) {
+        confettiPieces.push({
+            x: x,
+            y: y,
+            w: Math.random() * 10 + 5,
+            h: Math.random() * 6 + 3,
+            vx: (Math.random() - 0.5) * 16,
+            vy: Math.random() * -14 - 4,
+            color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+            rotation: Math.random() * 360,
+            rotSpeed: (Math.random() - 0.5) * 12,
+            gravity: 0.4,
+            life: 1,
+            decay: 0.008 + Math.random() * 0.008
+        });
+    }
+    animateConfetti();
+}
+
+function animateConfetti() {
+    if (confettiPieces.length === 0) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    confettiPieces = confettiPieces.filter(p => {
+        p.x += p.vx;
+        p.vy += p.gravity;
+        p.y += p.vy;
+        p.rotation += p.rotSpeed;
+        p.life -= p.decay;
+        if (p.life <= 0) return false;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation * Math.PI / 180);
+        ctx.globalAlpha = p.life;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+        return true;
+    });
+    if (confettiPieces.length > 0) requestAnimationFrame(animateConfetti);
+}
+
+// Trigger confetti on CTA box interaction
+document.getElementById('ctaBox').addEventListener('click', (e) => {
+    createConfetti(e.clientX, e.clientY);
+});
+
+// Also trigger on SMS link
+document.querySelectorAll('.sms-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+        createConfetti(e.clientX, e.clientY);
+    });
+});
+</script>
 
 </body>
 </html>
