@@ -792,9 +792,9 @@
         <p class="cta-label">We Need You This Sunday. Text Now.</p>
         <p class="code">SPRINGREF26</p>
         <p class="to">to</p>
-        <p class="phone"><a href="sms:9786354968&body=SPRINGREF26">978-635-4968</a></p>
+        <p class="phone"><a href="sms:9786354968" id="smsPhone">978-635-4968</a></p>
         <p class="url"><a href="https://worcesterflag.com">worcesterflag.com</a></p>
-        <a href="sms:9786354968&body=SPRINGREF26" class="sms-link">Tap to Text Now</a>
+        <a href="sms:9786354968" id="smsButton" class="sms-link">Tap to Text Now</a>
     </div>
 
     <div class="urgency reveal">
@@ -811,6 +811,14 @@
 </div>
 
 <script>
+// Fix SMS links for iOS vs Android
+(function() {
+    var sep = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? '&' : '?';
+    var smsHref = 'sms:9786354968' + sep + 'body=SPRINGREF26';
+    var els = document.querySelectorAll('#smsPhone, #smsButton');
+    els.forEach(function(el) { el.href = smsHref; });
+})();
+
 // Scroll reveal observer
 const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
 const revealObserver = new IntersectionObserver((entries) => {
