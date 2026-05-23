@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: weneedrefs
+    runtime: static
+    buildCommand: echo "Static site ready"
+    staticPublishPath: .
+    envVars: []
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=3600

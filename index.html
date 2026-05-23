@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeNeedRefs.com - Central Mass Flag Worcester</title>
+    <meta name="description" content="Get paid to ref youth NFL flag football in Worcester. Up to $25/hour. Sundays only. No experience needed. We train you.">
+    <meta property="og:title" content="We Need Refs. You Need Cash.">
+    <meta property="og:description" content="Get paid to ref youth NFL flag football games on Sunday afternoons. Up to $25/hour. No experience necessary.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://weneedrefs.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black: #000000;
+            --dark: #0A0A0A;
+            --card: #1A1A1A;
+            --teal: #2BB5C4;
+            --white: #FFFFFF;
+            --gray: #B0B0B0;
+            --muted: #808080;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top teal bar */
+        .top-bar {
+            height: 4px;
+            background: var(--teal);
+            width: 100%;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 24px;
+            text-align: center;
+        }
+
+        /* Brand tag */
+        .brand-tag {
+            margin-top: 48px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--teal);
+        }
+
+        /* Hero */
+        .hero {
+            margin-top: 32px;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 10vw, 72px);
+            font-weight: 900;
+            line-height: 1.05;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 .teal {
+            color: var(--teal);
+        }
+
+        .hero .subhead {
+            margin-top: 24px;
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--gray);
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .hero .subhead strong {
+            color: var(--white);
+        }
+
+        /* Pay block */
+        .pay-block {
+            margin-top: 48px;
+            background: var(--teal);
+            border-radius: 16px;
+            padding: 40px 32px;
+        }
+
+        .pay-block .label {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: rgba(0,0,0,0.6);
+        }
+
+        .pay-block .amount {
+            font-size: clamp(56px, 12vw, 80px);
+            font-weight: 900;
+            color: var(--black);
+            line-height: 1.1;
+            margin: 8px 0;
+        }
+
+        .pay-block .detail {
+            font-size: 16px;
+            font-weight: 600;
+            color: rgba(0,0,0,0.8);
+        }
+
+        .pay-block .math {
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(0,0,0,0.5);
+        }
+
+        /* Divider */
+        .divider {
+            height: 2px;
+            background: var(--teal);
+            opacity: 0.3;
+            margin: 48px 0;
+        }
+
+        /* Feature cards */
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 48px;
+        }
+
+        .feature-card {
+            background: var(--card);
+            border-radius: 14px;
+            padding: 32px 20px;
+        }
+
+        .feature-card .icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--teal);
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* Details section */
+        .details {
+            margin-top: 48px;
+        }
+
+        .details .section-label {
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--teal);
+            margin-bottom: 32px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+        }
+
+        .detail-item .label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .detail-item .value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .detail-item .sub {
+            font-size: 13px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        /* What you need */
+        .what-you-need {
+            margin-top: 48px;
+            font-size: 16px;
+            color: var(--gray);
+            line-height: 1.7;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .what-you-need strong {
+            color: var(--white);
+        }
+
+        /* CTA box */
+        .cta-box {
+            margin-top: 48px;
+            border: 2px solid var(--teal);
+            border-radius: 16px;
+            padding: 40px 32px;
+        }
+
+        .cta-box .cta-label {
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--teal);
+            margin-bottom: 24px;
+        }
+
+        .cta-box .code {
+            font-size: clamp(28px, 6vw, 40px);
+            font-weight: 900;
+            color: var(--white);
+            letter-spacing: 0.05em;
+        }
+
+        .cta-box .to {
+            font-size: 14px;
+            color: var(--muted);
+            margin: 12px 0;
+            text-transform: lowercase;
+        }
+
+        .cta-box .phone {
+            font-size: clamp(24px, 5vw, 36px);
+            font-weight: 900;
+            color: var(--white);
+        }
+
+        .cta-box .phone a {
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .cta-box .url {
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--teal);
+        }
+
+        .cta-box .url a {
+            color: var(--teal);
+            text-decoration: none;
+        }
+
+        /* Urgency pulse */
+        .urgency {
+            margin-top: 48px;
+            background: var(--card);
+            border-radius: 14px;
+            padding: 32px;
+        }
+
+        .urgency p {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.5;
+        }
+
+        .urgency .teal {
+            color: var(--teal);
+        }
+
+        /* Bottom bar */
+        .bottom-bar {
+            margin-top: 64px;
+            background: var(--teal);
+            padding: 16px 24px;
+            text-align: center;
+        }
+
+        .bottom-bar p {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--black);
+        }
+
+        .bottom-bar a {
+            color: var(--black);
+            text-decoration: none;
+        }
+
+        /* Mobile */
+        @media (max-width: 520px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .container {
+                padding: 0 20px;
+            }
+        }
+
+        /* SMS link on mobile */
+        .sms-link {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .sms-link {
+                display: inline-block;
+                margin-top: 20px;
+                background: var(--teal);
+                color: var(--black);
+                font-size: 16px;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                padding: 16px 32px;
+                border-radius: 10px;
+                text-decoration: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<div class="container">
+
+    <p class="brand-tag">Central Mass Flag Worcester</p>
+
+    <div class="hero">
+        <h1>We Need <span class="teal">Refs.</span><br>You Need <span class="teal">Cash.</span></h1>
+        <p class="subhead">
+            Get paid to ref youth NFL flag football games on Sunday afternoons. 
+            No experience necessary. We train you. 
+            <strong>Season is happening now.</strong>
+        </p>
+    </div>
+
+    <div class="pay-block">
+        <p class="label">Up To</p>
+        <p class="amount">$25 / hr</p>
+        <p class="detail">Multiple games every Sunday, May 17 - June 28</p>
+        <p class="math">Do the math.</p>
+    </div>
+
+    <div class="features">
+        <div class="feature-card">
+            <div class="icon">&#9917;</div>
+            <h3>Sundays Only</h3>
+            <p>Two to four hours on a Sunday afternoon. That's it. Your weekdays and Saturdays are yours.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">&#127891;</div>
+            <h3>College Apps</h3>
+            <p>Leadership, community involvement, paid work experience. Admissions officers notice this stuff.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">&#9201;</div>
+            <h3>Service Hours</h3>
+            <p>Need community service hours for school or NHS? We'll sign off on every hour you ref.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">&#128170;</div>
+            <h3>No Experience</h3>
+            <p>If you know what a first down is, you're ahead of the curve. We'll teach you the rest.</p>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="details">
+        <p class="section-label">The Details</p>
+        <div class="details-grid">
+            <div class="detail-item">
+                <p class="label">When</p>
+                <p class="value">Sundays</p>
+                <p class="sub">May 17 - June 28</p>
+            </div>
+            <div class="detail-item">
+                <p class="label">Where</p>
+                <p class="value">O'Connell Field</p>
+                <p class="sub">Worcester, MA</p>
+            </div>
+            <div class="detail-item">
+                <p class="label">Ages</p>
+                <p class="value">15+</p>
+                <p class="sub">Must be 15 or older</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="what-you-need">
+        <strong>What you need:</strong> A pair of sneakers, a basic understanding of football, 
+        and the ability to show up on Sundays. That's it. We handle the training, the schedule, 
+        and the whistle.
+    </p>
+
+    <div class="divider"></div>
+
+    <div class="cta-box">
+        <p class="cta-label">We Need You This Sunday. Text Now.</p>
+        <p class="code">SPRINGREF26</p>
+        <p class="to">to</p>
+        <p class="phone"><a href="sms:9786354968&body=SPRINGREF26">978-635-4968</a></p>
+        <p class="url"><a href="https://worcesterflag.com">worcesterflag.com</a></p>
+        <a href="sms:9786354968&body=SPRINGREF26" class="sms-link">Tap to Text Now</a>
+    </div>
+
+    <div class="urgency">
+        <p>Games are happening <span class="teal">right now</span> and we need more refs on the field. Every Sunday you wait is money you're not making.</p>
+    </div>
+
+</div>
+
+<div class="bottom-bar">
+    <p>Central Mass Flag Worcester &bull; NFL Flag Football &bull; Spring 2026 &bull; <a href="https://worcesterflag.com">worcesterflag.com</a></p>
+</div>
+
+</body>
+</html>
